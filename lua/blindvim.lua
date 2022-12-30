@@ -1,24 +1,24 @@
 local M = {}
 local api = vim.api
 local default = {
-	stop = false,
-	timer = nil,
-	flashlight={},
-	fgColor = M.fg or "#D4D4D4",
-	bgColor = M.bg or "#000000",
-	bgColorBeforeArr = {'#525252','#3F3F46','#27272A','#18181B','#000000'},
-	fgColorBeforeArr = {'#FAFAFA','#F4F4F5','#E4E4E7','#A1A1AA','#404040'},
+  stop = false,
+  timer = nil,
+  flashlight={},
+  fgColor = M.fg or "#D4D4D4",
+  bgColor = M.bg or "#000000",
+  bgColorBeforeArr = {'#525252','#3F3F46','#27272A','#18181B','#000000'},
+  fgColorBeforeArr = {'#FAFAFA','#F4F4F5','#E4E4E7','#A1A1AA','#404040'},
 }
 
 M.setup = function(opt)
-	M.config = vim.tbl_deep_extend('force', default, opt or {})
+  M.config = vim.tbl_deep_extend('force', default, opt or {})
 end
 
 M.start = function()
  M.stop = false
+
  local function flashlight()
     for key, value in pairs(M.flashlight) do
-
       if value >= #M.bgColorBeforeArr then
         for i=1, #M.bgColorBeforeArr do
           local hi ="highlight FlashLineNumber"..i.." guibg="..M.bgColorBeforeArr[i].." guifg="..M.fgColorBeforeArr[i];
@@ -110,38 +110,38 @@ M.start = function()
 end
 
 M.stop = function()
-	api.nvim_command("call clearmatches()")
-	M.stop = true
-	if M.timer ~= nil then
-		M.timer:close()
-		M.timer = nil
-	end
-	M.flashlight = {}
+  api.nvim_command("call clearmatches()")
+  M.stop = true
+  if M.timer ~= nil then
+	  M.timer:close()
+	  M.timer = nil
+  end
+  M.flashlight = {}
 end
 
 M.mark = function()
-	if M.timer == nil then
-		print("blindvim not active")
-		return
-	end
+  if M.timer == nil then
+	  print("blindvim not active")
+	  return
+  end
 
-	local lineNum = api.nvim_win_get_cursor(0)[1]
-	if M.flashlight[lineNum] == nil then
-		M.flashlight[lineNum]=lineNum
-	end
+  local lineNum = api.nvim_win_get_cursor(0)[1]
+  if M.flashlight[lineNum] == nil then
+	  M.flashlight[lineNum]=lineNum
+  end
 end
 
 M.unmark = function()
-	if M.timer == nil then
-		return
-	end
-	local lineNum = api.nvim_win_get_cursor(0)[1]
-	M.flashlight[lineNum]=nil
+  if M.timer == nil then
+	  return
+  end
+  local lineNum = api.nvim_win_get_cursor(0)[1]
+  M.flashlight[lineNum]=nil
 end
 
 M.clear = function()
-	M.flashlight = {}
-	M.start()
+  M.flashlight = {}
+  M.start()
 end
 
 return M
