@@ -14,10 +14,7 @@ M.setup = function(opt)
   M.config = vim.tbl_deep_extend('force', default, opt or {})
 end
 
-M.start = function()
- M.stop = false
-
- local function flashlight()
+ M._flashlight = function()
     for key, value in pairs(M.flashlight) do
       if value >= #M.bgColorBeforeArr then
         for i=1, #M.bgColorBeforeArr do
@@ -44,7 +41,8 @@ M.start = function()
     end
   end
 
-  local function blindvim()
+
+M._blindvim = function()
     local totallines = vim.fn.line('$')
     -- Get the current line number
     local lineNum = api.nvim_win_get_cursor(0)[1]
@@ -94,19 +92,21 @@ M.start = function()
     end
 
     -- call flsahlight
-    flashlight()
+    M._flashlight()
   end
 
+M.start = function()
+  M.stop = false
   vim.on_key(function (key)
     if (key == 'k' or key == 'j') and M.stop == false then
       M.timer = vim.loop.new_timer()
       M.timer:start(10, 0, vim.schedule_wrap(function()
-        blindvim()
+        M._blindvim()
       end))
     end
   end)
 
-  blindvim()
+  M._blindvim()
 end
 
 M.stop = function()
