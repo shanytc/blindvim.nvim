@@ -1,0 +1,1 @@
+# blindvim.nvim
