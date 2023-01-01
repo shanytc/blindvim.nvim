@@ -72,11 +72,11 @@ M._blindvim = function()
   local isBlind = M.config.isBlind
   local started = M.config.started
 
-  if isBlind then
+  if not started then
     return
   end
 
-  if not started then
+  if isBlind then
     return
   end
 
@@ -149,11 +149,7 @@ vim.on_key(function (key)
      return
   end
 
-  if isBlind then
-    return
-  end
-
-  if isK_or_J_pressed and started then
+  if isK_or_J_pressed and started and not isBlind then
     if timer == nil then
       timer = vim.loop.new_timer()
     end
@@ -190,9 +186,7 @@ end
 
 M.blind = function()
   M.config.isBlind = true
-  M.stop()
   M._blind()
-  print(vim.inspect(M.config))
 end
 
 M.unmark = function()
