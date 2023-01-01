@@ -150,12 +150,12 @@ end
 
 M.blind = function()
   M.config.blindMode = true
-  M.start()
+  M._blindvim()
 end
 
 M.unblind = function()
   M.config.blindMode = false
-  M.start()
+  M._blindvim()
 end
 
 M.unmark = function()
@@ -166,9 +166,9 @@ M.unmark = function()
   M.config.flashlight[lineNum]=nil
 end
 
-M.clear = function()
+M.clear_marks = function()
   M.config.flashlight = {}
-  M.start()
+  M._blindvim()
 end
 
 return M
