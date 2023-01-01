@@ -118,8 +118,9 @@ M._blindvim = function()
 end
 
 M.start = function()
+  local stop = M.config.stop
+
   vim.on_key(function (key)
-    local stop = M.config.stop
     local isK_or_J_pressed = (key == 'k' or key == 'j')
 
     if isK_or_J_pressed and stop == false then
