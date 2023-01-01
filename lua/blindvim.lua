@@ -47,27 +47,31 @@ end
     end
   end
 
+M._blind = function()
+  local totallines = vim.fn.line('$')
+  local blindMode = M.config.blindMode
+
+  -- Enable blind mode (hide all text)
+  if blindMode then
+    print("blind mode on!")
+    for i=1, totallines do
+      local hi ="highlight CustomBlindLineNumber"..i.." guibg=#000000 guifg=#000000";
+      api.nvim_command(hi)
+      api.nvim_command("call matchadd('CustomBlindLineNumber"..i.."', '\\%"..(i).."l')")
+    end
+  end
+end
+
 M._blindvim = function()
   local bgColorBeforeArr = M.config.bgColorBeforeArr
   local fgColorBeforeArr = M.config.fgColorBeforeArr
   local fgColor = M.config.fgColor
   local bgColor = M.config.bgColor
   local totallines = vim.fn.line('$')
-  local blindMode = M.config.blindMode
   -- Get the current line number
   local lineNum = api.nvim_win_get_cursor(0)[1]
   -- got the current selected text
   --local lineText = api.nvim_buf_get_lines(0, lineNum-1, lineNum, true)[1] 
-
-  -- Enable blind mode (hide all text)
-  if blindMode then
-    for i=1, totallines do
-      local hi ="highlight CustomBlindLineNumber"..i.." guibg=#000000 guifg=#000000";
-      api.nvim_command(hi)
-      api.nvim_command("call matchadd('CustomBlindLineNumber"..i.."', '\\%"..(i).."l')")
-    end
-    return
-  end
 
   -- clear whatever selected
   api.nvim_command("call clearmatches()")
@@ -114,12 +118,12 @@ M._blindvim = function()
 
   -- call flsahlight
   M._flashlight()
-  end
+end
 
 M.start = function()
   M.config.stop = false
   vim.on_key(function (key)
-    if (key == 'k' or key == 'j') and M.config.stop == false then
+    if (key == 'k' or key == 'j') and M.config.stop == false and M.config.blindMode == false then
       M.config.timer = vim.loop.new_timer()
       M.config.timer:start(10, 0, vim.schedule_wrap(function()
         M._blindvim()
@@ -138,10 +142,11 @@ M.stop = function()
     M.config.timer = nil
   end
   M.config.flashlight = {}
+  M.config.blindMode = false
 end
 
 M.mark = function()
-  if M.config.timer == nil or M.config.bgColor then
+  if M.config.timer == nil or M.config.blindMode then
     return
   end
 
@@ -149,11 +154,12 @@ M.mark = function()
   if M.config.flashlight[lineNum] == nil then
     M.config.flashlight[lineNum]=lineNum
   end
+  M._blindvim()
 end
 
 M.blind = function()
   M.config.blindMode = true
-  M._blindvim()
+  M._blind()
 end
 
 M.unblind = function()
@@ -167,6 +173,7 @@ M.unmark = function()
   end
   local lineNum = api.nvim_win_get_cursor(0)[1]
   M.config.flashlight[lineNum]=nil
+  M._blindvim()
 end
 
 M.clear_marks = function()
