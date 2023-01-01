@@ -4,7 +4,6 @@ local default = {
   stop = false,
   timer = nil,
   flashlight={},
-  blindMode=false,
   fgColor = M.fg or "#D4D4D4",
   bgColor = M.bg or "#000000",
   bgColorBeforeArr = {'#525252','#3F3F46','#27272A','#18181B','#000000'},
@@ -49,16 +48,14 @@ end
 
 M._blind = function()
   local totallines = vim.fn.line('$')
-  local blindMode = M.config.blindMode
+
+  api.nvim_command("call clearmatches()")
 
   -- Enable blind mode (hide all text)
-  if blindMode then
-    print("blind mode on!")
-    for i=1, totallines do
-      local hi ="highlight CustomBlindLineNumber"..i.." guibg=#000000 guifg=#000000";
-      api.nvim_command(hi)
-      api.nvim_command("call matchadd('CustomBlindLineNumber"..i.."', '\\%"..(i).."l')")
-    end
+  for i=1, totallines do
+    local hi ="highlight CustomBlindLineNumber"..i.." guibg=#000000 guifg=#000000";
+    api.nvim_command(hi)
+    api.nvim_command("call matchadd('CustomBlindLineNumber"..i.."', '\\%"..(i).."l')")
   end
 end
 
@@ -123,10 +120,9 @@ end
 M.start = function()
   vim.on_key(function (key)
     local stop = M.config.stop
-    local blindMode = M.config.blindMode
     local isK_or_J_pressed = (key == 'k' or key == 'j')
 
-    if isK_or_J_pressed and stop == false and blindMode == false then
+    if isK_or_J_pressed and stop == false then
       M.config.timer = vim.loop.new_timer()
       M.config.timer:start(10, 0, vim.schedule_wrap(function()
         M._blindvim()
@@ -145,11 +141,10 @@ M.stop = function()
     M.config.timer = nil
   end
   M.config.flashlight = {}
-  M.config.blindMode = false
 end
 
 M.mark = function()
-  if M.config.timer == nil or M.config.blindMode then
+  if M.config.timer == nil or M.config.stop == true then
     return
   end
 
@@ -161,12 +156,12 @@ M.mark = function()
 end
 
 M.blind = function()
-  M.config.blindMode = true
+  M.config.stop = true
   M._blind()
 end
 
 M.unblind = function()
-  M.config.blindMode = false
+  M.config.stop = false
   M._blindvim()
 end
 
