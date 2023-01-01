@@ -3,6 +3,7 @@ local api = vim.api
 local default = {
   stop = false,
   timer = nil,
+  started = false,
   flashlight={},
   fgColor = M.fg or "#D4D4D4",
   bgColor = M.bg or "#000000",
@@ -118,13 +119,19 @@ M._blindvim = function()
 end
 
 M.start = function()
-  M._blindvim()
+   M.config.started = true
+   M._blindvim()
 end
 
 vim.on_key(function (key)
   local stop = M.config.stop
   local timer = M.config.timer
   local isK_or_J_pressed = (key == 'k' or key == 'j')
+  local started = M.config.started
+
+  if not started then
+     return
+  end
 
   if isK_or_J_pressed and stop == false then
     if timer == nil then
