@@ -3,6 +3,7 @@ local api = vim.api
 local default = {
   stop = false,
   timer = nil,
+  loaded = false,
   started = false,
   isBlind = false,
   flashlight={},
@@ -14,6 +15,7 @@ local default = {
 
 M.setup = function(opt)
   M.config = vim.tbl_deep_extend('force', default, opt or {})
+  M.config.loaded = true
 end
 
  M._flashlight = function()
@@ -120,22 +122,22 @@ M._blindvim = function()
 end
 
 M.start = function()
-   M.config.started = true
-   M._blindvim()
+  M.config.started = true
+  M._blindvim()
 end
 
 vim.on_key(function (key)
-  local stop = M.config.stop
   local timer = M.config.timer
   local isK_or_J_pressed = (key == 'k' or key == 'j')
+  local loaded = M.config.loaded
   local started = M.config.started
   local isBlind = M.config.isBlind
 
-  if not started or isBlind then
+  if not loaded then
      return
   end
 
-  if isK_or_J_pressed and stop == false then
+  if isK_or_J_pressed and started then
     if timer == nil then
       M.config.timer = vim.loop.new_timer()
     end
@@ -147,7 +149,7 @@ end)
 
 M.stop = function()
   api.nvim_command("call clearmatches()")
-  M.config.stop = true
+  M.config.started = false
   if M.config.timer ~= nil then
     M.config.timer:close()
     M.config.timer = nil
@@ -156,7 +158,10 @@ M.stop = function()
 end
 
 M.mark = function()
-  if M.config.timer == nil or M.config.stop == true then
+  local started = M.config.started
+  local timer = M.config.timer
+
+  if timer == nil or not started then
     return
   end
 
