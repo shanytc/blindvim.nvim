@@ -17,7 +17,7 @@ M.setup = function(opt)
   M.config = vim.tbl_deep_extend('force', default, opt or {})
   M.config.loaded = true
   api.nvim_buf_set_keymap(0, 'n', 'k',"<cmd>lua require'blindvim'._blindvim()<CR>",{})
-  api.nvim_buf_set_keymap(0, 'n', 'j',"<cmd>lua require'blindvim'._blindvim(<CR>",{})
+  api.nvim_buf_set_keymap(0, 'n', 'j',"<cmd>lua require'blindvim'._blindvim()<CR>",{})
 end
 
  M._flashlight = function()
