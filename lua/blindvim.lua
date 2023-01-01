@@ -123,6 +123,7 @@ end
 
 M.start = function()
   M.config.started = true
+  M.config.isBlind = false
   M._blindvim()
 end
 
@@ -180,11 +181,6 @@ M.blind = function()
   M.config.isBlind = true
   M.stop()
   M._blind()
-end
-
-M.unblind = function()
-  M.config.isBlind = false
-  M.start()
 end
 
 M.unmark = function()
