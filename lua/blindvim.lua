@@ -105,11 +105,11 @@ M._blindvim = function()
   end
 
 M.start = function()
-  M.stop = false
+  M.config.stop = false
   vim.on_key(function (key)
-    if (key == 'k' or key == 'j') and M.stop == false then
-      M.timer = vim.loop.new_timer()
-      M.timer:start(10, 0, vim.schedule_wrap(function()
+    if (key == 'k' or key == 'j') and M.config.stop == false then
+      M.config.timer = vim.loop.new_timer()
+      M.congif.timer:start(10, 0, vim.schedule_wrap(function()
         M._blindvim()
       end))
     end
@@ -120,36 +120,35 @@ end
 
 M.stop = function()
   api.nvim_command("call clearmatches()")
-  M.stop = true
-  if M.timer ~= nil then
-	  M.timer:close()
-	  M.timer = nil
+  M.config.stop = true
+  if M.config.timer ~= nil then
+    M.config.timer:close()
+    M.config.timer = nil
   end
-  M.flashlight = {}
+  M.config.flashlight = {}
 end
 
 M.mark = function()
-  if M.timer == nil then
-	  print("blindvim not active")
-	  return
+  if M.config.timer == nil then
+    return
   end
 
   local lineNum = api.nvim_win_get_cursor(0)[1]
-  if M.flashlight[lineNum] == nil then
-	  M.flashlight[lineNum]=lineNum
+  if M.config.flashlight[lineNum] == nil then
+    M.config.flashlight[lineNum]=lineNum
   end
 end
 
 M.unmark = function()
-  if M.timer == nil then
-	  return
+  if M.config.timer == nil then
+    return
   end
   local lineNum = api.nvim_win_get_cursor(0)[1]
-  M.flashlight[lineNum]=nil
+  M.config.flashlight[lineNum]=nil
 end
 
 M.clear = function()
-  M.flashlight = {}
+  M.config.flashlight = {}
   M.start()
 end
 
