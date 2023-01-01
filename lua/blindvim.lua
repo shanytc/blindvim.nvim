@@ -17,7 +17,10 @@ end
  M._flashlight = function()
     local bgColorBeforeArr = M.config.bgColorBeforeArr
     local fgColorBeforeArr = M.config.fgColorBeforeArr
-    for key, value in pairs(M.congif.flashlight) do
+    local fgColor = M.config.fgColor
+    local bgColor = M.config.bgColor
+
+    for _, value in pairs(M.congif.flashlight) do
       if value >= #bgColorBeforeArr then
         for i=1, #bgColorBeforeArr do
           local hi ="highlight FlashLineNumber"..i.." guibg="..bgColorBeforeArr[i].." guifg="..fgColorBeforeArr[i];
@@ -32,10 +35,10 @@ end
         end
       end
 
-      api.nvim_command("highlight FlashLineNumber guibg="..M.config.fgColor.." guifg="..M.config.bgColor)
+      api.nvim_command("highlight FlashLineNumber guibg="..fgColor.." guifg="..bgColor)
       api.nvim_command("call matchadd('FlashLineNumber', '\\%"..(value).."l')")
 
-      for i=1, #M.bgColorBeforeArr do
+      for i=1, #bgColorBeforeArr do
         local hi ="highlight FlashLineNumber"..i.." guibg="..bgColorBeforeArr[i].." guifg="..fgColorBeforeArr[i];
         api.nvim_command(hi)
         api.nvim_command("call matchadd('FlashLineNumber"..i.."', '\\%"..(value+i).."l')")
@@ -47,6 +50,8 @@ end
 M._blindvim = function()
     local bgColorBeforeArr = M.config.bgColorBeforeArr
     local fgColorBeforeArr = M.config.fgColorBeforeArr
+    local fgColor = M.config.fgColor
+    local bgColor = M.config.bgColor
     local totallines = vim.fn.line('$')
     -- Get the current line number
     local lineNum = api.nvim_win_get_cursor(0)[1]
@@ -78,7 +83,7 @@ M._blindvim = function()
     end
 
     -- highlight current line
-    api.nvim_command("highlight CurrentLineNumber guibg="..M.fgColor.." guifg="..M.bgColor)
+    api.nvim_command("highlight CurrentLineNumber guibg="..fgColor.." guifg="..bgColor)
     api.nvim_command("call matchadd('CurrentLineNumber', '\\%"..(lineNum).."l')")
 
     -- apply dimming lights after current line
