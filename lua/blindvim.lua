@@ -144,6 +144,7 @@ vim.on_key(function (key)
   local loaded = M.config.loaded
   local started = M.config.started
   local isBlind = M.config.isBlind
+  print(vim.inspect(M))
 
   if not loaded then
      return
