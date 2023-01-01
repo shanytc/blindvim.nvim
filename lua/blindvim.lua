@@ -109,7 +109,7 @@ M.start = function()
   vim.on_key(function (key)
     if (key == 'k' or key == 'j') and M.config.stop == false then
       M.config.timer = vim.loop.new_timer()
-      M.congif.timer:start(10, 0, vim.schedule_wrap(function()
+      M.config.timer:start(10, 0, vim.schedule_wrap(function()
         M._blindvim()
       end))
     end
