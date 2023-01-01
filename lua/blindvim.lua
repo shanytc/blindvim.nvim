@@ -127,6 +127,7 @@ M.start = function()
 end
 
 vim.on_key(function (key)
+  print(vim.inspect(M))
   local timer = M.config.timer
   local isK_or_J_pressed = (key == 'k' or key == 'j')
   local loaded = M.config.loaded
