@@ -1,0 +1,44 @@
+===============================================================================
+                                                                 *blindvim.nvim*
+
+This plugins help you to focus on your text/code
+by blanking out the rest of the text/code except your current line.
+blindvim will use an array of grayscale to create a gradient effect.
+Blindvim also gives a privary aspect as all the code is hidden except
+the line you're on.
+
+Usage:
+
+                                                            *blindvim.start()*
+blindvim.start()
+    
+    Start blindvim and hide all the text/code.
+
+
+                                                             *blindvim.stop()*
+blindvim.stop()
+
+    Stop blindvim and show all the text/code.
+
+                                                             *blindvim.mark()*
+blindvim.mark()
+
+    Mark the current line in order to see it.
+    This is helpful if you want to always see partd of text/code
+    while you're working.
+
+                                                           *blindvim.unmark()*
+blindvim.unmark()
+
+    Unmark the current line you're on.
+    This will remove your mark and hide the line.
+
+                                                            *blindvim.clear()*
+blindvim.clear()
+
+    Clear all marks and return to default mode. 
+
+
+
+
+vim:tw=78:ts=8:ft=help:norl:
