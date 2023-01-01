@@ -155,9 +155,9 @@ vim.on_key(function (key)
 
   if isK_or_J_pressed and started then
     if timer == nil then
-      M.config.timer = vim.loop.new_timer()
+      timer = vim.loop.new_timer()
     end
-    M.config.timer:start(10, 0, vim.schedule_wrap(function()
+    timer:start(10, 0, vim.schedule_wrap(function()
       M._blindvim()
     end))
   end
@@ -189,10 +189,10 @@ M.mark = function()
 end
 
 M.blind = function()
-  print(vim.inspect(M.config))
   M.config.isBlind = true
   M.stop()
   M._blind()
+  print(vim.inspect(M.config))
 end
 
 M.unmark = function()
