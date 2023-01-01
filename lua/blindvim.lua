@@ -150,10 +150,12 @@ end
 
 M.blind = function()
   M.config.blindMode = true
+  M.start()
 end
 
 M.unblind = function()
   M.config.blindMode = false
+  M.start()
 end
 
 M.unmark = function()
