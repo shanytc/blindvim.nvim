@@ -16,6 +16,8 @@ local default = {
 M.setup = function(opt)
   M.config = vim.tbl_deep_extend('force', default, opt or {})
   M.config.loaded = true
+  api.nvim_set_keymap('n', 'k','<cmd>lua M._blindvim()<CR>')
+  api.nvim_set_keymap('n', 'j','<cmd>lua M._blindvim()<CR>')
 end
 
  M._flashlight = function()
@@ -137,28 +139,6 @@ M.start = function()
   M.config.isBlind = false
   M._blindvim()
 end
-
-vim.on_key(function (key)
-  local timer = M.config.timer
-  local isK_or_J_pressed = (key == 'k' or key == 'j')
-  local loaded = M.config.loaded
-  local started = M.config.started
-  local isBlind = M.config.isBlind
-  print(vim.inspect(M))
-
-  if not loaded then
-     return
-  end
-
-  if isK_or_J_pressed and started and not isBlind then
-    if timer == nil then
-      timer = vim.loop.new_timer()
-    end
-    timer:start(10, 0, vim.schedule_wrap(function()
-      M._blindvim()
-    end))
-  end
-end)
 
 M.stop = function()
   api.nvim_command("call clearmatches()")
