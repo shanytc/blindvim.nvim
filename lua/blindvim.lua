@@ -137,6 +137,10 @@ vim.on_key(function (key)
      return
   end
 
+  if not isBlind then
+    return
+  end
+
   if isK_or_J_pressed and started then
     if timer == nil then
       M.config.timer = vim.loop.new_timer()
