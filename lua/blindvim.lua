@@ -156,13 +156,12 @@ M.mark = function()
 end
 
 M.blind = function()
-  M.config.stop = true
+  M.stop()
   M._blind()
 end
 
 M.unblind = function()
-  M.config.stop = false
-  M._blindvim()
+  M.start()
 end
 
 M.unmark = function()
