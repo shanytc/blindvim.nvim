@@ -20,7 +20,7 @@ end
     local fgColor = M.config.fgColor
     local bgColor = M.config.bgColor
 
-    for _, value in pairs(M.congif.flashlight) do
+    for _, value in pairs(M.config.flashlight) do
       if value >= #bgColorBeforeArr then
         for i=1, #bgColorBeforeArr do
           local hi ="highlight FlashLineNumber"..i.." guibg="..bgColorBeforeArr[i].." guifg="..fgColorBeforeArr[i];
