@@ -29,7 +29,7 @@ end
         end
       elseif value < #bgColorBeforeArr then
         for i=1, value % #bgColorBeforeArr do
-          local hi ="highligrt FlashLineNumber"..i.." guibg="..bgColorBeforeArr[i].." guifg="..fgColorBeforeArr[i];
+          local hi ="highlight FlashLineNumber"..i.." guibg="..bgColorBeforeArr[i].." guifg="..fgColorBeforeArr[i];
           api.nvim_command(hi)
           api.nvim_command("call matchadd('FlashLineNumber"..i.."', '\\%"..(value-i).."l')")
         end
