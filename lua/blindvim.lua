@@ -69,6 +69,17 @@ M._blindvim = function()
   local fgColor = M.config.fgColor
   local bgColor = M.config.bgColor
   local totallines = vim.fn.line('$')
+  local isBlind = M.config.isBlind
+  local started = M.config.started
+
+  if isBlind then
+    return
+  end
+  
+  if not started then
+    return
+  end
+
   -- Get the current line number
   local lineNum = api.nvim_win_get_cursor(0)[1]
   -- got the current selected text
