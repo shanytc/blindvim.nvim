@@ -4,6 +4,7 @@ local default = {
   stop = false,
   timer = nil,
   flashlight={},
+  blindMode=false,
   fgColor = M.fg or "#D4D4D4",
   bgColor = M.bg or "#000000",
   bgColorBeforeArr = {'#525252','#3F3F46','#27272A','#18181B','#000000'},
@@ -46,13 +47,13 @@ end
     end
   end
 
-
 M._blindvim = function()
     local bgColorBeforeArr = M.config.bgColorBeforeArr
     local fgColorBeforeArr = M.config.fgColorBeforeArr
     local fgColor = M.config.fgColor
     local bgColor = M.config.bgColor
     local totallines = vim.fn.line('$')
+    local blindMode = M.config.blindMode
     -- Get the current line number
     local lineNum = api.nvim_win_get_cursor(0)[1]
     -- got the current selected text
@@ -83,8 +84,10 @@ M._blindvim = function()
     end
 
     -- highlight current line
-    api.nvim_command("highlight CurrentLineNumber guibg="..fgColor.." guifg="..bgColor)
-    api.nvim_command("call matchadd('CurrentLineNumber', '\\%"..(lineNum).."l')")
+    if blindMode == false then
+      api.nvim_command("highlight CurrentLineNumber guibg="..fgColor.." guifg="..bgColor)
+      api.nvim_command("call matchadd('CurrentLineNumber', '\\%"..(lineNum).."l')")
+    end
 
     -- apply dimming lights after current line
     for i=1, #bgColorBeforeArr do
@@ -101,7 +104,9 @@ M._blindvim = function()
     end
 
     -- call flsahlight
-    M._flashlight()
+    if blindMode == false then
+      M._flashlight()
+    end
   end
 
 M.start = function()
@@ -137,6 +142,14 @@ M.mark = function()
   if M.config.flashlight[lineNum] == nil then
     M.config.flashlight[lineNum]=lineNum
   end
+end
+
+M.blind = function()
+  M.config.blindMode = true
+end
+
+M.unblind = function()
+  M.config.blindMode = false
 end
 
 M.unmark = function()
