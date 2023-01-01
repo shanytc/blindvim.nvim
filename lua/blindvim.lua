@@ -149,7 +149,7 @@ vim.on_key(function (key)
      return
   end
 
-  if not isBlind then
+  if isBlind then
     return
   end
 
