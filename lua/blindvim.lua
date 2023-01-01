@@ -138,7 +138,7 @@ M.stop = function()
 end
 
 M.mark = function()
-  if M.config.timer == nil then
+  if M.config.timer == nil or M.config.bgColor then
     return
   end
 
