@@ -59,7 +59,6 @@ M._blindvim = function()
   -- got the current selected text
   --local lineText = api.nvim_buf_get_lines(0, lineNum-1, lineNum, true)[1] 
 
-  print("Blind mode: "..blindMode)
   -- Enable blind mode (hide all text)
   if blindMode then
     for i=1, totallines do
