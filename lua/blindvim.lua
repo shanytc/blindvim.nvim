@@ -16,41 +16,60 @@ local default = {
 M.setup = function(opt)
   M.config = vim.tbl_deep_extend('force', default, opt or {})
   M.config.loaded = true
-  api.nvim_buf_set_keymap(0, 'n', 'k',"<cmd>lua require'blindvim'._blindvim()<CR>",{})
-  api.nvim_buf_set_keymap(0, 'n', 'j',"<cmd>lua require'blindvim'._blindvim()<CR>",{})
 end
 
- M._flashlight = function()
-    local bgColorBeforeArr = M.config.bgColorBeforeArr
-    local fgColorBeforeArr = M.config.fgColorBeforeArr
-    local fgColor = M.config.fgColor
-    local bgColor = M.config.bgColor
+vim.on_key(function (key)
+  local timer = M.config.timer
+  local isK_or_J_pressed = (key == 'k' or key == 'j')
+  local loaded = M.config.loaded
+  local started = M.config.started
+  local isBlind = M.config.isBlind
 
-    for _, value in pairs(M.config.flashlight) do
-      if value >= #bgColorBeforeArr then
-        for i=1, #bgColorBeforeArr do
-          local hi ="highlight FlashLineNumber"..i.." guibg="..bgColorBeforeArr[i].." guifg="..fgColorBeforeArr[i];
-          api.nvim_command(hi)
-          api.nvim_command("call matchadd('FlashLineNumber"..i.."', '\\%"..(value-i).."l')")
-        end
-      elseif value < #bgColorBeforeArr then
-        for i=1, value % #bgColorBeforeArr do
-          local hi ="highlight FlashLineNumber"..i.." guibg="..bgColorBeforeArr[i].." guifg="..fgColorBeforeArr[i];
-          api.nvim_command(hi)
-          api.nvim_command("call matchadd('FlashLineNumber"..i.."', '\\%"..(value-i).."l')")
-        end
-      end
+  if not loaded then
+     return
+  end
 
-      api.nvim_command("highlight FlashLineNumber guibg="..fgColor.." guifg="..bgColor)
-      api.nvim_command("call matchadd('FlashLineNumber', '\\%"..(value).."l')")
+  if isK_or_J_pressed and started and not isBlind then
+    if timer == nil then
+      timer = vim.loop.new_timer()
+    end
+    timer:start(10, 0, vim.schedule_wrap(function()
+      M._blindvim()
+    end))
+  end
+end)
 
+M._flashlight = function()
+  local bgColorBeforeArr = M.config.bgColorBeforeArr
+  local fgColorBeforeArr = M.config.fgColorBeforeArr
+  local fgColor = M.config.fgColor
+  local bgColor = M.config.bgColor
+
+  for _, value in pairs(M.config.flashlight) do
+    if value >= #bgColorBeforeArr then
       for i=1, #bgColorBeforeArr do
         local hi ="highlight FlashLineNumber"..i.." guibg="..bgColorBeforeArr[i].." guifg="..fgColorBeforeArr[i];
         api.nvim_command(hi)
-        api.nvim_command("call matchadd('FlashLineNumber"..i.."', '\\%"..(value+i).."l')")
+        api.nvim_command("call matchadd('FlashLineNumber"..i.."', '\\%"..(value-i).."l')")
+      end
+    elseif value < #bgColorBeforeArr then
+      for i=1, value % #bgColorBeforeArr do
+        local hi ="highlight FlashLineNumber"..i.." guibg="..bgColorBeforeArr[i].." guifg="..fgColorBeforeArr[i];
+        api.nvim_command(hi)
+        api.nvim_command("call matchadd('FlashLineNumber"..i.."', '\\%"..(value-i).."l')")
       end
     end
+
+    api.nvim_command("highlight FlashLineNumber guibg="..fgColor.." guifg="..bgColor)
+    api.nvim_command("call matchadd('FlashLineNumber', '\\%"..(value).."l')")
+
+    for i=1, #bgColorBeforeArr do
+      local hi ="highlight FlashLineNumber"..i.." guibg="..bgColorBeforeArr[i].." guifg="..fgColorBeforeArr[i];
+      api.nvim_command(hi)
+      api.nvim_command("call matchadd('FlashLineNumber"..i.."', '\\%"..(value+i).."l')")
+    end
   end
+end
 
 M._blind = function()
   local totallines = vim.fn.line('$')
