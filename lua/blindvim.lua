@@ -186,6 +186,7 @@ end
 
 M.blind = function()
   M.config.isBlind = true
+  M.stop()
   M._blind()
 end
 
