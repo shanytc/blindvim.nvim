@@ -15,26 +15,28 @@ M.setup = function(opt)
 end
 
  M._flashlight = function()
-    for key, value in pairs(M.flashlight) do
-      if value >= #M.bgColorBeforeArr then
-        for i=1, #M.bgColorBeforeArr do
-          local hi ="highlight FlashLineNumber"..i.." guibg="..M.bgColorBeforeArr[i].." guifg="..M.fgColorBeforeArr[i];
+    local bgColorBeforeArr = M.config.bgColorBeforeArr
+    local fgColorBeforeArr = M.config.fgColorBeforeArr
+    for key, value in pairs(M.congif.flashlight) do
+      if value >= #bgColorBeforeArr then
+        for i=1, #bgColorBeforeArr do
+          local hi ="highlight FlashLineNumber"..i.." guibg="..bgColorBeforeArr[i].." guifg="..fgColorBeforeArr[i];
           api.nvim_command(hi)
           api.nvim_command("call matchadd('FlashLineNumber"..i.."', '\\%"..(value-i).."l')")
         end
-      elseif value < #M.bgColorBeforeArr then
-        for i=1, value % #M.bgColorBeforeArr do
-          local hi ="highligrt FlashLineNumber"..i.." guibg="..M.bgColorBeforeArr[i].." guifg="..M.fgColorBeforeArr[i];
+      elseif value < #bgColorBeforeArr then
+        for i=1, value % #bgColorBeforeArr do
+          local hi ="highligrt FlashLineNumber"..i.." guibg="..bgColorBeforeArr[i].." guifg="..fgColorBeforeArr[i];
           api.nvim_command(hi)
           api.nvim_command("call matchadd('FlashLineNumber"..i.."', '\\%"..(value-i).."l')")
         end
       end
 
-      api.nvim_command("highlight FlashLineNumber guibg="..M.fgColor.." guifg="..M.bgColor)
+      api.nvim_command("highlight FlashLineNumber guibg="..M.config.fgColor.." guifg="..M.config.bgColor)
       api.nvim_command("call matchadd('FlashLineNumber', '\\%"..(value).."l')")
 
       for i=1, #M.bgColorBeforeArr do
-        local hi ="highlight FlashLineNumber"..i.." guibg="..M.bgColorBeforeArr[i].." guifg="..M.fgColorBeforeArr[i];
+        local hi ="highlight FlashLineNumber"..i.." guibg="..bgColorBeforeArr[i].." guifg="..fgColorBeforeArr[i];
         api.nvim_command(hi)
         api.nvim_command("call matchadd('FlashLineNumber"..i.."', '\\%"..(value+i).."l')")
       end
@@ -43,6 +45,8 @@ end
 
 
 M._blindvim = function()
+    local bgColorBeforeArr = M.config.bgColorBeforeArr
+    local fgColorBeforeArr = M.config.fgColorBeforeArr
     local totallines = vim.fn.line('$')
     -- Get the current line number
     local lineNum = api.nvim_win_get_cursor(0)[1]
@@ -59,15 +63,15 @@ M._blindvim = function()
     end
 
     -- apply dimming highlights before current line
-    if lineNum >= #M.bgColorBeforeArr then
-      for i=1, #M.bgColorBeforeArr do
-        local hi ="highlight CustomLineNumber"..i.." guibg="..M.bgColorBeforeArr[i].." guifg="..M.fgColorBeforeArr[i];
+    if lineNum >= #bgColorBeforeArr then
+      for i=1, #bgColorBeforeArr do
+        local hi ="highlight CustomLineNumber"..i.." guibg="..bgColorBeforeArr[i].." guifg="..fgColorBeforeArr[i];
         api.nvim_command(hi)
         api.nvim_command("call matchadd('CustomLineNumber"..i.."', '\\%"..(lineNum-i).."l')")
       end
-    elseif lineNum < #M.bgColorBeforeArr then
-      for i=1, lineNum % #M.bgColorBeforeArr do
-        local hi ="highlight CustomLineNumber"..i.." guibg="..M.bgColorBeforeArr[i].." guifg="..M.fgColorBeforeArr[i];
+    elseif lineNum < #bgColorBeforeArr then
+      for i=1, lineNum % #bgColorBeforeArr do
+        local hi ="highlight CustomLineNumber"..i.." guibg="..bgColorBeforeArr[i].." guifg="..fgColorBeforeArr[i];
         api.nvim_command(hi)
         api.nvim_command("call matchadd('CustomLineNumber"..i.."', '\\%"..(lineNum-i).."l')")
       end
@@ -78,14 +82,14 @@ M._blindvim = function()
     api.nvim_command("call matchadd('CurrentLineNumber', '\\%"..(lineNum).."l')")
 
     -- apply dimming lights after current line
-    for i=1, #M.bgColorBeforeArr do
-      local hi ="highlight CustomLineNumber"..i.." guibg="..M.bgColorBeforeArr[i].." guifg="..M.fgColorBeforeArr[i];
+    for i=1, #bgColorBeforeArr do
+      local hi ="highlight CustomLineNumber"..i.." guibg="..bgColorBeforeArr[i].." guifg="..fgColorBeforeArr[i];
       api.nvim_command(hi)
       api.nvim_command("call matchadd('CustomLineNumber"..i.."', '\\%"..(lineNum+i).."l')")
     end
 
     -- hide all code after dimming
-    for i=lineNum+1+#M.bgColorBeforeArr, totallines do
+    for i=lineNum+1+#bgColorBeforeArr, totallines do
       local hi ="highlight CustomAfterLineNumber"..i.." guibg=#000000 guifg=#000000";
       api.nvim_command(hi)
       api.nvim_command("call matchadd('CustomAfterLineNumber"..i.."', '\\%"..(i).."l')")
