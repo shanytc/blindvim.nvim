@@ -58,17 +58,21 @@ M._blindvim = function()
   local lineNum = api.nvim_win_get_cursor(0)[1]
   -- got the current selected text
   --local lineText = api.nvim_buf_get_lines(0, lineNum-1, lineNum, true)[1] 
-  -- clear whatever selected
-  api.nvim_command("call clearmatches()")
 
+  print("Blind mode: "..blindMode)
+  -- Enable blind mode (hide all text)
   if blindMode then
     for i=1, totallines do
-      local hi ="highlight CustomBeforeLineNumber"..i.." guibg=#000000 guifg=#000000";
+      local hi ="highlight CustomBlindLineNumber"..i.." guibg=#000000 guifg=#000000";
       api.nvim_command(hi)
-      api.nvim_command("call matchadd('CustomBeforeLineNumber"..i.."', '\\%"..(i).."l')")
+      api.nvim_command("call matchadd('CustomBlindLineNumber"..i.."', '\\%"..(i).."l')")
     end
     return
   end
+
+  -- clear whatever selected
+  api.nvim_command("call clearmatches()")
+
   -- hide all code before dimming
   for i=1, lineNum do
     local hi ="highlight CustomBeforeLineNumber"..i.." guibg=#000000 guifg=#000000";
