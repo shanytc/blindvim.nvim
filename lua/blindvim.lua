@@ -75,7 +75,7 @@ M._blindvim = function()
   if isBlind then
     return
   end
-  
+
   if not started then
     return
   end
@@ -189,6 +189,7 @@ M.mark = function()
 end
 
 M.blind = function()
+  print(vim.inspect(M.config))
   M.config.isBlind = true
   M.stop()
   M._blind()
