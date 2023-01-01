@@ -4,6 +4,7 @@ local default = {
   stop = false,
   timer = nil,
   started = false,
+  isBlind = false,
   flashlight={},
   fgColor = M.fg or "#D4D4D4",
   bgColor = M.bg or "#000000",
@@ -128,8 +129,9 @@ vim.on_key(function (key)
   local timer = M.config.timer
   local isK_or_J_pressed = (key == 'k' or key == 'j')
   local started = M.config.started
+  local isBlind = M.config.isBlind
 
-  if not started then
+  if not started or isBlind then
      return
   end
 
@@ -166,11 +168,13 @@ M.mark = function()
 end
 
 M.blind = function()
+  M.config.isBlind = true
   M.stop()
   M._blind()
 end
 
 M.unblind = function()
+  M.config.isBlind = false
   M.start()
 end
 
