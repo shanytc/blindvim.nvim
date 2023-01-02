@@ -19,7 +19,6 @@ local api = vim.api
 M.setup = function(opt)
     M.config = vim.tbl_deep_extend('force', default, opt or {})
     M.config.loaded = true
-    print("config updated")
 end
 
 vim.on_key(function(key)
