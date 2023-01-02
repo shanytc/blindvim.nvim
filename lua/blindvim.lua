@@ -13,7 +13,7 @@ local default = {
     bgColorBeforeArr = { '#525252', '#3F3F46', '#27272A', '#18181B', '#000000' },
     fgColorBeforeArr = { '#FAFAFA', '#F4F4F5', '#E4E4E7', '#A1A1AA', '#404040' },
 }
-local curbuf = vim.api.nvim_get_current_buf()
+--local curbuf = vim.api.nvim_get_current_buf()
 local api = vim.api
 
 M.setup = function(opt)
@@ -25,12 +25,12 @@ vim.on_key(function(key)
     local loaded = M.config.loaded
     local started = M.config.started
     local isK_or_J_pressed = (key == 'k' or key == 'j')
-    local buf = vim.api.nvim_get_current_buf()
+    --local buf = vim.api.nvim_get_current_buf()
     local blind = M.config.isBlind
 
-    if buf ~= curbuf then
-        return
-    end
+    --if buf ~= curbuf then
+    --    return
+    --end
 
     if not loaded then
         return
