@@ -188,9 +188,8 @@ end
 
 M.mark = function()
     local started = M.config.started
-    local timer = M.config.timer
 
-    if timer == nil or not started then
+    if not started then
         return
     end
 
