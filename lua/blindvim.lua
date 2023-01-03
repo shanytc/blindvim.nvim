@@ -13,7 +13,6 @@ local default = {
     bgColorBeforeArr = { '#525252', '#3F3F46', '#27272A', '#18181B', '#000000' },
     fgColorBeforeArr = { '#FAFAFA', '#F4F4F5', '#E4E4E7', '#A1A1AA', '#404040' },
 }
---local curbuf = vim.api.nvim_get_current_buf()
 local api = vim.api
 
 M.setup = function(opt)
@@ -25,18 +24,14 @@ vim.on_key(function(key)
     local loaded = M.config.loaded
     local started = M.config.started
     local isK_or_J_pressed = (key == 'k' or key == 'j')
-    --local buf = vim.api.nvim_get_current_buf()
     local blind = M.config.isBlind
-
-    --if buf ~= curbuf then
-    --    return
-    --end
 
     if not loaded then
         return
     end
 
     if blind then
+        M._closeTimer()
         return
     end
 
@@ -44,8 +39,7 @@ vim.on_key(function(key)
         M.config.timer = vim.loop.new_timer()
         M.config.timer:start(10, 0, vim.schedule_wrap(function()
             M._blindvim()
-            M.config.timer:close()
-            M.config.timer = nil
+            M._closeTimer()
         end))
     end
 end)
@@ -87,7 +81,6 @@ end
 
 M._blind = function()
     local totallines = vim.fn.line('$')
-
     api.nvim_command("call clearmatches()")
 
     -- Enable blind mode (hide all text)
@@ -176,14 +169,18 @@ M.start = function()
     M._blindvim()
 end
 
-M.stop = function()
-    api.nvim_command("call clearmatches()")
-    M.config.started = false
+M._closeTimer = function ()
     if M.config.timer ~= nil then
         M.config.timer:close()
         M.config.timer = nil
     end
+end
+
+M.stop = function()
+    api.nvim_command("call clearmatches()")
+    M.config.started = false
     M.config.flashlight = {}
+    M._closeTimer()
 end
 
 M.mark = function()
@@ -220,4 +217,9 @@ M.clear_marks = function()
     M._blindvim()
 end
 
-return M
+--return M
+
+M.setup()
+vim.keymap.set('n', '<leader>bb', M.start)
+vim.keymap.set('n', '<leader>cc', M.stop)
+vim.keymap.set('n', '<leader>xx', M.blind)
