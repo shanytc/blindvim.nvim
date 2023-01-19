@@ -250,8 +250,7 @@ M.unmark_hidden = function()
 end
 
 M.clear_hidden_lines = function()
-    M.config.hiddenLines = {}
-    M._hidelines()
+    M.stop()
 end
 
 return M
