@@ -8,6 +8,7 @@ local default = {
     started = false,
     isBlind = false,
     flashlight = {},
+    hiddenLines = {},
     fgColor = M.fg or "#D4D4D4",
     bgColor = M.bg or "#000000",
     bgColorBeforeArr = { '#525252', '#3F3F46', '#27272A', '#18181B', '#000000' },
@@ -43,6 +44,13 @@ vim.on_key(function(key)
         end))
     end
 end)
+
+M._hidelines = function()
+    for _, value in pairs(M.config.hiddenLines) do
+        api.nvim_command("highlight FlashLineNumber guibg=#000000 guifg=#000000")
+        api.nvim_command("call matchadd('FlashLineNumber', '\\%" .. (value) .. "l')")
+    end
+end
 
 M._flashlight = function()
     local bgColorBeforeArr = M.config.bgColorBeforeArr
@@ -161,6 +169,7 @@ M._blindvim = function()
 
     -- call flsahlight
     M._flashlight()
+    M._hidelines()
 end
 
 M.start = function()
@@ -179,8 +188,16 @@ end
 M.stop = function()
     api.nvim_command("call clearmatches()")
     M.config.started = false
+    M.config.isBlind = false
     M.config.flashlight = {}
+    M.config.hiddenLines = {}
     M._closeTimer()
+end
+
+M.blind = function()
+    M.config.isBlind = true
+    M.stop()
+    M._blind()
 end
 
 M.mark = function()
@@ -197,12 +214,6 @@ M.mark = function()
     M._blindvim()
 end
 
-M.blind = function()
-    M.config.isBlind = true
-    M.stop()
-    M._blind()
-end
-
 M.unmark = function()
     if M.config.timer == nil then
         return
@@ -217,9 +228,41 @@ M.clear_marks = function()
     M._blindvim()
 end
 
+M.mark_hidden = function()
+    local started = M.config.started
+
+    if not started then
+        return
+    end
+
+    local lineNum = api.nvim_win_get_cursor(0)[1]
+    if M.config.hiddenLines[lineNum] == nil then
+        M.config.hiddenLines[lineNum] = lineNum
+    end
+    M._blindvim()
+end
+
+M.unmark_hidden = function()
+    local started = M.config.started
+
+    if not started then
+        return
+    end
+
+    local lineNum = api.nvim_win_get_cursor(0)[1]
+    M.config.hiddenLines[lineNum] = nil
+    M._blindvim()
+end
+
+M.clear_hidden_lines = function()
+    M.config.hiddenLines = {}
+    M._blindvim()
+end
+
 --return M
 
 M.setup()
 vim.keymap.set('n', '<leader>bb', M.start)
 vim.keymap.set('n', '<leader>cc', M.stop)
 vim.keymap.set('n', '<leader>xx', M.blind)
+vim.keymap.set('n', '<leader>hh', M.mark_hidden)
