@@ -20,7 +20,6 @@ local api = vim.api
 M.setup = function(opt)
     M.config = vim.tbl_deep_extend('force', default, opt or {})
     M.config.loaded = true
-    print("setup complete")
 end
 
 vim.on_key(function(key)
