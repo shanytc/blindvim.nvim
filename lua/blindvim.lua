@@ -49,14 +49,6 @@ vim.on_key(function(key)
 end)
 
 M._hidelines = function()
-    local loaded = M.config.loaded
-
-    if not loaded then
-        return
-    end
-
-    api.nvim_command("call clearmatches()")
-
     for _, value in pairs(M.config.hiddenLines) do
         api.nvim_command("highlight HideLineNumber guibg=#000000 guifg=#000000")
         api.nvim_command("call matchadd('HideLineNumber', '\\%" .. (value) .. "l')")
@@ -254,18 +246,25 @@ M.mark_hidden = function()
         return
     end
 
+    api.nvim_command("call clearmatches()")
+
     M.config.isHidden = true
     M.config.started = true
+
     local lineNum = api.nvim_win_get_cursor(0)[1]
     if M.config.hiddenLines[lineNum] == nil then
         M.config.hiddenLines[lineNum] = lineNum
     end
+
     M._hidelines()
 end
 
 M.unmark_hidden = function()
     M.config.isHidden = true
     M.config.started = true
+
+    api.nvim_command("call clearmatches()")
+
     local lineNum = api.nvim_win_get_cursor(0)[1]
     M.config.hiddenLines[lineNum] = nil
     M._hidelines()
