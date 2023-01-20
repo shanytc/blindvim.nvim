@@ -49,10 +49,11 @@ vim.on_key(function(key)
 end)
 
 M._hidelines = function()
-    api.nvim_command("call clearmatches()")
+    --api.nvim_command("call clearmatches()")
+    api.nvim_command("call matchdelete('CustomHideLineNumber')")
     for _, value in pairs(M.config.hiddenLines) do
-        api.nvim_command("highlight HideLineNumber guibg=#000000 guifg=#000000")
-        api.nvim_command("call matchadd('HideLineNumber', '\\%" .. (value) .. "l')")
+        api.nvim_command("highlight CustomHideLineNumber guibg=#000000 guifg=#000000")
+        api.nvim_command("call matchadd('CustomHideLineNumber', '\\%" .. (value) .. "l')")
     end
 end
 
@@ -125,7 +126,6 @@ M._blindvim = function()
     if not started then
         return
     end
-
 
     -- Get the current line number
     local lineNum = api.nvim_win_get_cursor(0)[1]
