@@ -109,15 +109,21 @@ M._blindvim = function()
     local totallines = vim.fn.line('$')
     local isBlind = M.config.isBlind
     local started = M.config.started
+    local loaded = M.config.loaded
     local isHidden = M.config.isHidden
 
-    if not started then
+    if not loaded then
         return
     end
 
     if isBlind or isHidden then
         return
     end
+
+    if not started then
+        return
+    end
+
 
     -- Get the current line number
     local lineNum = api.nvim_win_get_cursor(0)[1]
@@ -214,6 +220,7 @@ M.mark = function()
     if M.config.flashlight[lineNum] == nil then
         M.config.flashlight[lineNum] = lineNum
     end
+
     M._blindvim()
 end
 
@@ -304,10 +311,5 @@ end, {
         }
     end
 })
---vim.api.nvim_create_user_command("BlindvimOff",M.stop(), {})
---vim.api.nvim_create_user_command("BlindvimMark",M.mark(), {})
---vim.api.nvim_create_user_command("BlindvimUnMark",M.unmark(), {})
---vim.api.nvim_create_user_command("BlindvimMarkHidden",M.mark_hidden(), {})
---vim.api.nvim_create_user_command("BlindvimUnMarkHidden",M.unmark_hidden(), {})
 
 return M
