@@ -246,8 +246,6 @@ M.mark_hidden = function()
         return
     end
 
-    api.nvim_command("call clearmatches()")
-
     M.config.isHidden = true
     M.config.started = true
 
