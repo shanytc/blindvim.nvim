@@ -261,7 +261,7 @@ end
 
 vim.api.nvim_create_user_command("Blindvim",function(opts)
     local cmd = opts.args
-    if cmd == "on" then 
+    if cmd == "on" then
         require("blindvim").start()
     end
     if cmd == "off" then
