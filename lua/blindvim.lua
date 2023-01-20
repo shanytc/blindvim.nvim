@@ -259,11 +259,24 @@ M.clear_hidden_lines = function()
     M.stop()
 end
 
-vim.api.nvim_create_user_command("BlindvimOn",M.start(), {})
-vim.api.nvim_create_user_command("BlindvimOff",M.stop(), {})
-vim.api.nvim_create_user_command("BlindvimMark",M.mark(), {})
-vim.api.nvim_create_user_command("BlindvimUnMark",M.unmark(), {})
-vim.api.nvim_create_user_command("BlindvimMarkHidden",M.mark_hidden(), {})
-vim.api.nvim_create_user_command("BlindvimUnMarkHidden",M.unmark_hidden(), {})
+vim.api.nvim_create_user_command("Blindvim",function(opts)
+    local cmd = opts.args
+    if cmd == "on" then 
+        require("blindvim").start()
+    end
+    if cmd == "off" then
+        require("blindvim").stop()
+    end
+end, {
+    nargs="?",
+    complete = function ()
+        return {"on","off"}
+    end
+})
+--vim.api.nvim_create_user_command("BlindvimOff",M.stop(), {})
+--vim.api.nvim_create_user_command("BlindvimMark",M.mark(), {})
+--vim.api.nvim_create_user_command("BlindvimUnMark",M.unmark(), {})
+--vim.api.nvim_create_user_command("BlindvimMarkHidden",M.mark_hidden(), {})
+--vim.api.nvim_create_user_command("BlindvimUnMarkHidden",M.unmark_hidden(), {})
 
 return M
