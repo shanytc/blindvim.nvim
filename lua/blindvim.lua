@@ -1,6 +1,9 @@
+local api = vim.api
+
 local M = {
     config = {}
 }
+
 local default = {
     stop = false,
     timer = nil,
@@ -15,7 +18,6 @@ local default = {
     bgColorBeforeArr = { '#525252', '#3F3F46', '#27272A', '#18181B', '#000000' },
     fgColorBeforeArr = { '#FAFAFA', '#F4F4F5', '#E4E4E7', '#A1A1AA', '#404040' },
 }
-local api = vim.api
 
 M.setup = function(opt)
     M.config = vim.tbl_deep_extend('force', default, opt or {})
@@ -47,10 +49,17 @@ vim.on_key(function(key)
 end)
 
 M._hidelines = function()
+    local loaded = M.config.loaded
+
+    if not loaded then
+        return
+    end
+
     api.nvim_command("call clearmatches()")
+
     for _, value in pairs(M.config.hiddenLines) do
-        api.nvim_command("highlight FlashLineNumber guibg=#000000 guifg=#000000")
-        api.nvim_command("call matchadd('FlashLineNumber', '\\%" .. (value) .. "l')")
+        api.nvim_command("highlight HideLineNumber guibg=#000000 guifg=#000000")
+        api.nvim_command("call matchadd('HideLineNumber', '\\%" .. (value) .. "l')")
     end
 end
 
