@@ -232,6 +232,12 @@ M.clear_marks = function()
 end
 
 M.mark_hidden = function()
+    local started = M.config.started
+
+    if not started then
+        return
+    end
+
     M.config.isHidden = true
     M.config.started = true
     local lineNum = api.nvim_win_get_cursor(0)[1]
