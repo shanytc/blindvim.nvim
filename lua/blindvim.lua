@@ -264,13 +264,30 @@ api.nvim_create_user_command("Blindvim",function(opts)
     if cmd == "on" then
         require("blindvim").start()
     end
+
     if cmd == "off" then
         require("blindvim").stop()
+    end
+
+    if cmd == "flash" then
+        require("blindvim").mark()
+    end
+
+    if cmd == "unflash" then
+        require("blindvim").unmark()
+    end
+
+    if cmd == "hide" then
+        require("blindvim").mark_hidden()
+    end
+
+    if cmd == "unhide" then
+        require("blindvim").unmark_hidden()
     end
 end, {
     nargs="?",
     complete = function ()
-        return {"on","off"}
+        return {"on","off", "flash", "unflash", "hide", "unhide"}
     end
 })
 --vim.api.nvim_create_user_command("BlindvimOff",M.stop(), {})
