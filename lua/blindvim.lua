@@ -232,9 +232,9 @@ M.clear_marks = function()
 end
 
 M.mark_hidden = function()
-    local started = M.config.started
+    local loaded = M.config.loaded
 
-    if not started then
+    if not loaded then
         return
     end
 
