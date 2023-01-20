@@ -259,7 +259,7 @@ M.clear_hidden_lines = function()
     M.stop()
 end
 
-vim.api.nvim_create_user_command("Blindvim",function(opts)
+api.nvim_create_user_command("Blindvim",function(opts)
     local cmd = opts.args
     if cmd == "on" then
         require("blindvim").start()
