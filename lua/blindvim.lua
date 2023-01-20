@@ -13,6 +13,7 @@ local default = {
     isHidden = false,
     flashlight = {},
     hiddenLines = {},
+    hiddenLinesIds = {},
     fgColor = M.fg or "#D4D4D4",
     bgColor = M.bg or "#000000",
     bgColorBeforeArr = { '#525252', '#3F3F46', '#27272A', '#18181B', '#000000' },
@@ -51,9 +52,15 @@ end)
 M._hidelines = function()
     api.nvim_command("call clearmatches()")
     for _, value in pairs(M.config.hiddenLines) do
-        api.nvim_command("highlight CustomHideLineNumber guibg=#000000 guifg=#000000")
-        api.nvim_command("call matchadd('CustomHideLineNumber', '\\%" .. (value) .. "l')")
+        api.nvim_command("highlight CustomHideLineNumber".. value .." guibg=#000000 guifg=#000000")
+        api.nvim_command("call matchadd('CustomHideLineNumber" .. value .. "', '\\%" .. value .. "l')")
     end
+
+    --api.nvim_command("call clearmatches()")
+    --for _, value in pairs(M.config.hiddenLines) do
+    --    api.nvim_command("highlight CustomHideLineNumber guibg=#000000 guifg=#000000")
+    --    api.nvim_command("call matchadd('CustomHideLineNumber', '\\%" .. (value) .. "l')")
+    --end
 end
 
 M._flashlight = function()
