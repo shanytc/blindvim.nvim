@@ -49,6 +49,7 @@ vim.on_key(function(key)
 end)
 
 M._hidelines = function()
+    api.nvim_command("call clearmatches()")
     for _, value in pairs(M.config.hiddenLines) do
         api.nvim_command("highlight HideLineNumber guibg=#000000 guifg=#000000")
         api.nvim_command("call matchadd('HideLineNumber', '\\%" .. (value) .. "l')")
@@ -60,7 +61,7 @@ M._flashlight = function()
     local fgColorBeforeArr = M.config.fgColorBeforeArr
     local fgColor = M.config.fgColor
     local bgColor = M.config.bgColor
-
+    print("inside flashlight")
     for _, value in pairs(M.config.flashlight) do
         if value >= #bgColorBeforeArr then
             for i = 1, #bgColorBeforeArr do
@@ -261,7 +262,6 @@ M.unmark_hidden = function()
     M.config.isHidden = true
     M.config.started = true
 
-    api.nvim_command("call clearmatches()")
 
     local lineNum = api.nvim_win_get_cursor(0)[1]
     M.config.hiddenLines[lineNum] = nil
