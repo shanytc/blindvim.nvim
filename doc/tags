@@ -1,0 +1,6 @@
+blindvim.clear()	blindvim.txt	/*blindvim.clear()*
+blindvim.mark()	blindvim.txt	/*blindvim.mark()*
+blindvim.nvim	blindvim.txt	/*blindvim.nvim*
+blindvim.start()	blindvim.txt	/*blindvim.start()*
+blindvim.stop()	blindvim.txt	/*blindvim.stop()*
+blindvim.unmark()	blindvim.txt	/*blindvim.unmark()*

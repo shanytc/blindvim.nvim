@@ -49,8 +49,7 @@ vim.on_key(function(key)
 end)
 
 M._hidelines = function()
-    --api.nvim_command("call clearmatches()")
-    api.nvim_command("call matchdelete('CustomHideLineNumber')")
+    api.nvim_command("call clearmatches()")
     for _, value in pairs(M.config.hiddenLines) do
         api.nvim_command("highlight CustomHideLineNumber guibg=#000000 guifg=#000000")
         api.nvim_command("call matchadd('CustomHideLineNumber', '\\%" .. (value) .. "l')")
