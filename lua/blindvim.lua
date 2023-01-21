@@ -53,14 +53,8 @@ M._hidelines = function()
     api.nvim_command("call clearmatches()")
     for _, value in pairs(M.config.hiddenLines) do
         api.nvim_command("highlight CustomHideLineNumber".. value .." guibg=#000000 guifg=#000000")
-        api.nvim_command("call matchadd('CustomHideLineNumber" .. value .. "', '\\%" .. value .. "l')")
+        api.nvim_command("call matchadd('CustomHideLineNumber" .. value .. "', '\\%" .. (value) .. "l')")
     end
-
-    --api.nvim_command("call clearmatches()")
-    --for _, value in pairs(M.config.hiddenLines) do
-    --    api.nvim_command("highlight CustomHideLineNumber guibg=#000000 guifg=#000000")
-    --    api.nvim_command("call matchadd('CustomHideLineNumber', '\\%" .. (value) .. "l')")
-    --end
 end
 
 M._flashlight = function()
@@ -263,14 +257,14 @@ M.mark_hidden = function()
     end
 
     M.config.isHidden = true
-    M.config.started = true
+    M._closeTimer()
 
     local lineNum = api.nvim_win_get_cursor(0)[1]
     if M.config.hiddenLines[lineNum] == nil then
         M.config.hiddenLines[lineNum] = lineNum
     end
 
-    M._hidelines()
+    M._hideines()
 end
 
 M.unmark_hidden = function()
