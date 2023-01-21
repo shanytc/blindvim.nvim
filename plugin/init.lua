@@ -36,6 +36,11 @@ vim.api.nvim_create_user_command("Blindvim",function(opts)
         return
     end
 
+    if cmd == "hideSelectedLines" then
+        require("blindvim").hideSelectedLines()
+        return
+    end
+
     if cmd == "blind" then
         require("blindvim").blind()
         return
@@ -47,7 +52,7 @@ end, {
             "on","off",
             "blind",
             "flash", "unflash", "reflash",
-            "hide", "unhide"
+            "hide", "hideSelectedLines", "unhide"
         }
     end
 })

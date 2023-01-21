@@ -287,6 +287,49 @@ M.unhide = function()
     M._hidelines()
 end
 
+M.hideSelectedLines = function()
+    local loaded = M.config.loaded
+
+    if not loaded then
+        return
+    end
+
+    M.config.isHidden = true
+
+    local get_visual = function()
+        local curpos = vim.fn.getcurpos()
+        local one = { row = curpos[2], col = curpos[3] }
+        local two = { row = vim.fn.line('v'), col = vim.fn.col('v') }
+
+        if one.row == two.row then
+            if one.col > two.col then
+                local tmp = one
+                one = two
+                two = tmp
+            end
+        elseif one.row > two.row then
+            local tmp = one
+            one = two
+            two = tmp
+        end
+
+        two.col = two.col + 1
+        return { startLine = one, endLine = two }
+    end
+
+    local lineresult = get_visual()
+    local startline = lineresult.startLine.row
+    local endline = lineresult.endLine.row
+
+    for i=startline, endline do
+        if M.config.hiddenLines[i] == nil then
+            M.config.hiddenLines[i] = i
+        end
+    end
+
+    M._hidelines()
+end
+
 M.clear_hidden_lines = function()
     M.stop()
 end
