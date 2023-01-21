@@ -27,12 +27,12 @@ vim.api.nvim_create_user_command("Blindvim",function(opts)
     end
 
     if cmd == "hide" then
-        require("blindvim").mark_hidden()
+        require("blindvim").hide()
         return
     end
 
     if cmd == "unhide" then
-        require("blindvim").unmark_hidden()
+        require("blindvim").unhide()
         return
     end
 

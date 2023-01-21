@@ -206,6 +206,12 @@ M.stop = function()
 end
 
 M.blind = function()
+    local loaded = M.config.loaded
+
+    if not loaded then
+        return
+    end
+
     M.stop()
     M.config.isBlind = true
     M._blind()
@@ -249,7 +255,7 @@ M.clear_marks = function()
     M._blindvim()
 end
 
-M.mark_hidden = function()
+M.hide = function()
     local loaded = M.config.loaded
 
     if not loaded then
@@ -257,17 +263,16 @@ M.mark_hidden = function()
     end
 
     M.config.isHidden = true
-    M._closeTimer()
 
     local lineNum = api.nvim_win_get_cursor(0)[1]
     if M.config.hiddenLines[lineNum] == nil then
         M.config.hiddenLines[lineNum] = lineNum
     end
 
-    M._hideines()
+    M._hidelines()
 end
 
-M.unmark_hidden = function()
+M.unhide = function()
     local loaded = M.config.loaded
 
     if not loaded then
@@ -275,7 +280,6 @@ M.unmark_hidden = function()
     end
 
     M.config.isHidden = true
-    M.config.started = true
 
     local lineNum = api.nvim_win_get_cursor(0)[1]
     M.config.hiddenLines[lineNum] = nil
