@@ -289,8 +289,13 @@ end
 
 M.hideSelectedLines = function()
     local loaded = M.config.loaded
+    local mode = api.nvim_get_mode()["mode"]
 
     if not loaded then
+        return
+    end
+
+    if mode ~= "V" then
         return
     end
 
@@ -328,6 +333,12 @@ M.hideSelectedLines = function()
     end
 
     M._hidelines()
+    -- move cursor to the last selected lines
+    api.nvim_win_set_cursor(0,{lineresult.endLine.row, 0})
+
+    -- cancel visual selection mode by sending Esc
+    local key = api.nvim_replace_termcodes("<Esc>",true,false,true)
+    api.nvim_feedkeys(key,'v',false)
 end
 
 M.clear_hidden_lines = function()
