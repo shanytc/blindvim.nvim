@@ -9,35 +9,60 @@ the line you're on.
 
 Usage:
 
-                                                            *blindvim.start()*
-blindvim.start()
+                                                                 *Blindvim.on*
+Blindvim on
     
     Start blindvim and hide all the text/code.
 
 
-                                                             *blindvim.stop()*
-blindvim.stop()
+                                                             *Blindvim.off*
+Blindvim off
 
     Stop blindvim and show all the text/code.
 
-                                                             *blindvim.mark()*
-blindvim.mark()
 
-    Mark the current line in order to see it.
-    This is helpful if you want to always see partd of text/code
-    while you're working.
+                                                              *Blindvim.blind*
+Blindvim blind
 
-                                                           *blindvim.unmark()*
-blindvim.unmark()
+    Completely hide all lines of your code.
+    Use this feature when you are moving away from your keyboard
+    and don't want anyone looking what you do.
 
-    Unmark the current line you're on.
+                                                              *Blindvim.flash*
+Blindvim flash
+
+    Mark (or flashlight) the current line in order to see it.
+    This is helpful if you want to always see parts of text/code
+    while you're working blindly.
+
+                                                           *Blindvim.unflash*
+Blindvim unflash
+
+    Unmark (un-flashlight) the current line you're on.
     This will remove your mark and hide the line.
 
-                                                            *blindvim.clear()*
-blindvim.clear()
+                                                            *Blindvim.unflash*
+Blindvim reflash
 
-    Clear all marks and return to default mode. 
+    Clear all marks (flashlights) and return to default mode. 
 
+
+                                                               *Blindvim.hide*
+Blindvim hide
+
+    Hide current line (completly darken it) for security reasons.
+
+
+                                                             *Blindvim.unhide*
+Blindvim unhide
+
+    Unhide current line (un-darken it), remove security.
+
+
+                                                  *Blindvim.hideSelectedLines*
+Blindvim hideSelectedLines
+
+    Hide selected lines (in visual mode) for security issues.
 
 
 

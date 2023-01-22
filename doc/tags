@@ -1,6 +1,10 @@
-blindvim.clear()	blindvim.txt	/*blindvim.clear()*
-blindvim.mark()	blindvim.txt	/*blindvim.mark()*
+Blindvim.blind	blindvim.txt	/*Blindvim.blind*
+Blindvim.flash	blindvim.txt	/*Blindvim.flash*
+Blindvim.hide	blindvim.txt	/*Blindvim.hide*
+Blindvim.hideSelectedLines	blindvim.txt	/*Blindvim.hideSelectedLines*
+Blindvim.off	blindvim.txt	/*Blindvim.off*
+Blindvim.on	blindvim.txt	/*Blindvim.on*
+Blindvim.unflash	blindvim.txt	/*Blindvim.unflash*
+Blindvim.unflash	blindvim.txt	/*Blindvim.unflash*
+Blindvim.unhide	blindvim.txt	/*Blindvim.unhide*
 blindvim.nvim	blindvim.txt	/*blindvim.nvim*
-blindvim.start()	blindvim.txt	/*blindvim.start()*
-blindvim.stop()	blindvim.txt	/*blindvim.stop()*
-blindvim.unmark()	blindvim.txt	/*blindvim.unmark()*
